@@ -1,0 +1,53 @@
+---
+import ProductStory from "./ProductStory.astro";
+import ProductConnector from "./ProductConnector.astro";
+import Button from "./Button.astro";
+import { products } from "../data/products";
+
+// Pencil margin notes between rows, echoing the hero's "From busy hands and feet to pencil pressure".
+// Arrows follow the zig-zag: rows 1 and 3 have their visual on the right, rows 2 and 4 on the left.
+const connectors = [
+  { text: "from busy hands…", direction: "rtl", variant: "swoop" },
+  { text: "…to busy feet…", direction: "ltr", variant: "loop" },
+  { text: "…to pencil pressure", direction: "rtl", variant: "hook" },
+] as const;
+---
+
+<section id="products" class="section product-range" aria-labelledby="products-heading">
+  <div class="site-container site-container-wide">
+    <header class="range-intro">
+      <p class="eyebrow">The range</p>
+      <h2 id="products-heading" class="range-heading range-title">Different needs. Practical possibilities.</h2>
+      <p class="text-lead">
+        Everyday learning involves movement. ReguMove explores how the environment can make room for it.
+      </p>
+    </header>
+
+    {
+      products.map((product, i) => (
+        <>
+          <ProductStory product={product} index={i + 1} reverse={i % 2 === 1} />
+          {connectors[i] && i < products.length - 1 && <ProductConnector {...connectors[i]} />}
+        </>
+      ))
+    }
+
+    <div class="range-closing">
+      <h3 class="range-heading">Still evolving.</h3>
+      <p class="text-lead">
+        These are current designs being explored and refined with the people who understand these challenges first-hand.
+      </p>
+      <p class="text-body">
+        The aim is not simply to create another set of classroom tools, but to explore how movement, tactile activity and feedback can be built into the tools children use.
+      </p>
+      <Button href="#contact">Start the conversation</Button>
+    </div>
+
+    <aside class="range-note" aria-label="Product note">
+      <p class="eyebrow">Product note</p>
+      <p class="text-body">
+        Product visuals show current designs. Prototypes and features are being refined; contact Daniel for the latest availability and feedback opportunities.
+      </p>
+    </aside>
+  </div>
+</section>

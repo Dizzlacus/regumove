@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Button from "../components/Button.astro";
+import { business } from "../data/business";
+import { withBase } from "../lib/url";
+---
+
+<BaseLayout title={`Page not found | ${business.name}`} description="This page does not exist.">
+  <main id="main" class="site-container flex min-h-screen items-center">
+    <div>
+      <h1 class="section-heading mb-6">Page not found</h1>
+      <Button href={withBase("/")}>Back to ReguMove</Button>
+    </div>
+  </main>
+</BaseLayout>

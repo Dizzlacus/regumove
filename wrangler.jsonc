@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "regumove",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-08-03",
+  // www must be attached here too, otherwise it has no DNS record and never
+  // reaches the Worker's redirect to the apex.
+  // "routes": [
+  //   { "pattern": "regumove.com", "custom_domain": true },
+  //   { "pattern": "www.regumove.com", "custom_domain": true }
+  // ],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    // Hostname redirects are not supported in _redirects. The Worker must see
+    // www requests before a matching static asset is served.
+    "run_worker_first": true
+  }
+}

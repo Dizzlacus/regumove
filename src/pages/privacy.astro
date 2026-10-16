@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { business } from "../data/business";
+
+/*
+ * DRAFT privacy notice for Daniel's approval. It describes the site as built: the enquiry form
+ * (src/components/Contact.astro) is handled by the Cloudflare Worker (src/lib/enquire.ts) and
+ * delivered by email through Resend; nothing is stored by the site, and there are no cookies
+ * or analytics. Square-bracketed items are facts only Daniel can confirm.
+ * Before publishing: fill the placeholders, remove the draft note and `noindex`, and remove the
+ * /privacy filter from the sitemap integration in astro.config.mjs.
+ */
+---
+
+<BaseLayout title={`Privacy notice | ${business.name}`} description="How ReguMove handles the information you send through the enquiry form." noindex>
+  <Header />
+  <main id="main" class="legal">
+    <div class="site-container">
+      <p class="legal-draft" role="note"><strong>Draft — awaiting approval.</strong> Items in square brackets are still to be confirmed.</p>
+
+      <p class="eyebrow">Privacy</p>
+      <h1 class="section-heading">Privacy notice</h1>
+      <p class="section-lead text-lead">This notice explains what happens to the information you send through the enquiry form on this website.</p>
+
+      <h2>Who we are</h2>
+      <p>ReguMove is responsible for the information you send us. [Data controller name/business details — to confirm]</p>
+
+      <h2>What we collect</h2>
+      <p>When you send an enquiry, we receive:</p>
+      <ul>
+        <li>your name</li>
+        <li>your email address</li>
+        <li>which option best describes you (for example, teacher or parent/carer)</li>
+        <li>your school or organisation, if you choose to give it</li>
+        <li>your message</li>
+      </ul>
+      <p>
+        Please describe your situation generally. Don’t include a child’s name, personal records or other details that could identify a child.
+      </p>
+
+      <h2>Why we use it</h2>
+      <p>We use this information only to read and reply to your enquiry. [We don’t add you to a mailing list or use it for marketing — to confirm]</p>
+      <p>[Lawful basis for processing — to confirm]</p>
+
+      <h2>How it reaches us</h2>
+      <p>
+        This website is hosted on Cloudflare (Cloudflare Workers). When you send the form, the website passes your enquiry to Resend, an email delivery service, which sends it to our inbox as an email. The website itself doesn’t save your enquiry. [Cloudflare and Resend act as our service providers — to confirm]
+      </p>
+      <p>[Where enquiries are stored after delivery, and any international transfer safeguards — to confirm]</p>
+
+      <h2>Cookies and analytics</h2>
+      <p>
+        This website doesn’t set cookies and doesn’t use analytics or tracking. Like any website, Cloudflare processes technical information such as your IP address in order to deliver the site and protect it. The site’s fonts are loaded from Google Fonts, so your browser also connects to Google’s servers, which receive your IP address.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>[Retention period — to confirm]</p>
+
+      <h2>Your rights</h2>
+      <p>
+        Under UK data protection law (UK GDPR), you can ask for a copy of the information we hold about you, and ask us to correct it, delete it or stop using it. To make a request, contact us using the details below.
+      </p>
+      <p>
+        If you’re unhappy with how we’ve handled your information, you can complain to the Information Commissioner’s Office (ICO) at <a href="https://ico.org.uk/make-a-complaint/">ico.org.uk</a>. We’d appreciate the chance to put things right first.
+      </p>
+
+      <h2>Contact</h2>
+      <p>[Contact email — to confirm]</p>
+
+      <p class="legal-updated">Last updated: [Date — to confirm on approval]</p>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

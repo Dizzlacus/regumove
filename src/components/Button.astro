@@ -1,0 +1,30 @@
+---
+/**
+ * Pill button from the design handoff (.btn). Separate from the hero's .button classes,
+ * which keep their own look. Renders a link when `href` is set, otherwise a <button>.
+ */
+interface Props {
+  href?: string;
+  type?: "button" | "submit";
+  variant?: "primary" | "secondary";
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { href, type = "button", variant = "primary", class: className, ...rest } = Astro.props;
+const classes = ["btn", `btn-${variant}`, className];
+---
+
+{
+  href ? (
+    <a href={href} class:list={classes} {...rest}>
+      <span class="btn-label"><slot /></span>
+      <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+    </a>
+  ) : (
+    <button type={type} class:list={classes} {...rest}>
+      <span class="btn-label"><slot /></span>
+      <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+    </button>
+  )
+}

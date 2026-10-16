@@ -1,0 +1,92 @@
+---
+import { Picture } from "astro:assets";
+import { business } from "../data/business";
+import desk from "../assets/images/regudesk-cutout.png";
+
+const formats = ["avif", "webp"] as const;
+---
+
+<section id="home" class="hero" aria-labelledby="hero-title">
+  <div class="site-container site-container-wide hero-grid">
+    <div class="hero-copy">
+      <p class="hero-enter hero-brandline">
+        <span class="hero-brandline-rule" aria-hidden="true"></span>
+        {business.strapline}
+      </p>
+
+      <h1 id="hero-title" class="hero-enter hero-title" style="--enter-delay: 80ms">
+        <span class="block">Innovating the classroom.</span>
+        <span class="block hero-title-accent">
+          Enabling <span class="hero-mark">potential.<svg
+              class="hero-mark-line"
+              viewBox="0 0 300 24"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+              focusable="false"
+              ><path
+                pathLength="1"
+                d="M4 15.5c34-6.2 74-9.6 118-9.3 47 .3 95 3.6 128 6.9 15 1.5 29 2.1 46-.6"></path></svg
+            ></span>
+        </span>
+      </h1>
+
+      <p class="hero-enter hero-lead text-lead" style="--enter-delay: 160ms">
+        Practical movement and sensory tools designed to adapt the learning environment around children’s different needs.
+      </p>
+      <p class="hero-enter text-body" style="--enter-delay: 200ms">
+        From busy hands and feet to pencil pressure, ReguMove brings fresh thinking to the everyday classroom.
+      </p>
+
+      <div class="hero-enter hero-cta-group" style="--enter-delay: 260ms">
+        <a href="#contact" class="button button-primary button-lg">
+          Talk about your setting
+          <svg class="button-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M4 10h11m-4.5-4.5L15 10l-4.5 4.5"></path>
+          </svg>
+        </a>
+        <a href="#products" class="button button-secondary button-lg">
+          Explore the range
+          <svg class="button-icon button-icon-down" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M10 4v11m-4.5-4.5L10 15l4.5-4.5"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-enter hero-visual" style="--enter-delay: 180ms">
+      <div class="hero-shapes" aria-hidden="true">
+        <span class="paper paper-disc"></span>
+        <span class="paper paper-disc-deep"></span>
+        <span class="paper paper-slab"></span>
+      </div>
+
+      <svg class="hero-graphite" viewBox="0 0 600 520" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+        <defs>
+          <filter id="graphite-grain" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="n"></feTurbulence>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"></feDisplacementMap>
+          </filter>
+        </defs>
+        <path
+          pathLength="1"
+          filter="url(#graphite-grain)"
+          d="M-20 492c60-4 104-20 150-34 54-16 98-6 150 6 58 13 112 10 160-14 46-23 84-30 150-24"
+        ></path>
+      </svg>
+
+      <figure class="hero-card">
+        <Picture
+          src={desk}
+          formats={formats}
+          widths={[480, 720, 960, 1280]}
+          sizes="(min-width: 1280px) 460px, (min-width: 1024px) 36vw, (min-width: 768px) 560px, 88vw"
+          alt="ReguDesk design concept: a grey desk-mounted unit with a slider, push buttons, a turning dial and a roller."
+          loading="eager"
+          fetchpriority="high"
+          class="hero-img"
+        />
+        <figcaption class="hero-tag"><span class="hero-tag-name">ReguDesk</span> Current design concept</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>

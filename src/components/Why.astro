@@ -1,0 +1,68 @@
+---
+import { Picture } from "astro:assets";
+import classroom from "../assets/images/classroom-writing.jpg";
+import { arrowhead, pathEnd, squiggle } from "../lib/pencil";
+
+// Pencil note beside the copy: from 810px a short leftward curve towards the photo,
+// below that the shared downward squiggle (the photo stacks under the copy).
+const toPhoto = { d: "M152 44C132 55 104 57 82 47C62 38 40 25 12 20", end: [-28, -5] };
+const toPhotoHeads = arrowhead(...pathEnd(toPhoto.d), toPhoto.end, 0.75);
+---
+
+<section class="section why" aria-labelledby="why-heading">
+  <div class="site-container site-container-wide">
+    <div class="why-grid why-panel reveal">
+      <div class="why-copy">
+        <p class="eyebrow eyebrow-on-sage">Why it matters</p>
+        <h2 id="why-heading" class="section-heading">Inclusion takes shape in the everyday classroom.</h2>
+        <p class="section-lead text-lead">
+          The desk. The writing task. The opportunity to move. These are everyday parts of learning—and opportunities to design differently.
+        </p>
+        <p class="text-body">
+          ReguMove starts with a practical question: how can the tools around a child better accommodate the way they move, feel and participate?
+        </p>
+        <p class="text-body">
+          The aim is straightforward: make movement and sensory feedback part of everyday learning environments, with tools shaped around real routines and individual needs.
+        </p>
+
+        <div class="why-note" aria-hidden="true">
+          <svg class="why-note-curve" viewBox="0 0 160 64" focusable="false">
+            <defs>
+              <filter id="why-grain" x="-5%" y="-10%" width="110%" height="120%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n" />
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="2" />
+              </filter>
+            </defs>
+            <g filter="url(#why-grain)">
+              <path class="pencil-line" pathLength="1" d={toPhoto.d} />
+              {toPhotoHeads.map((d) => <path class="pencil-head" pathLength="1" d={d} />)}
+            </g>
+          </svg>
+          <svg class="why-note-squiggle" viewBox={squiggle.viewBox} focusable="false">
+            <g filter="url(#why-grain)">
+              <path class="pencil-line" pathLength="1" d={squiggle.line} />
+              {squiggle.heads.map((d) => <path class="pencil-head" pathLength="1" d={d} />)}
+            </g>
+          </svg>
+          <p class="pencil-note-text">the writing task</p>
+        </div>
+      </div>
+
+      <div class="why-figure">
+        <span class="paper why-paper" aria-hidden="true"></span>
+        <div class="why-frame">
+          <Picture
+            src={classroom}
+            formats={["avif", "webp"]}
+            widths={[640, 960, 1280, 1600]}
+            sizes="(min-width: 1280px) 480px, (min-width: 1024px) calc(58.6vw - 270px), (min-width: 810px) 330px, calc(100vw - 3rem)"
+            alt="A child’s hand writing in a lined exercise book with an orange pencil at a wooden classroom desk; no faces shown."
+            loading="lazy"
+            decoding="async"
+            class="why-img"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

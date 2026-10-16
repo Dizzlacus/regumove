@@ -1,0 +1,67 @@
+---
+import { arrowhead, pathEnd, squiggle } from "../lib/pencil";
+
+/**
+ * A pencil margin note between two product rows: a loose graphite arrow plus a short
+ * handwritten aside. Purely decorative, so the whole thing is hidden from assistive tech.
+ *
+ * From 810px the curve follows the zig-zag reading flow (`direction` = where it travels);
+ * below 810px it becomes a short downward squiggle beside the note.
+ */
+interface Props {
+  text: string;
+  /** Horizontal travel of the arrow from 810px up. */
+  direction: "ltr" | "rtl";
+  /** Curve shape, so neighbouring connectors don't look stamped. */
+  variant?: "swoop" | "loop" | "hook";
+}
+
+const { text, direction, variant = "swoop" } = Astro.props;
+
+// Each curve is drawn right → left in a 400×140 box (tail top-right, tip bottom-left);
+// `ltr` mirrors it. `end` is the direction of travel at the tip, for the arrowhead.
+const curves = {
+  swoop: {
+    d: "M372 12C368 50 322 76 252 81C184 86 116 78 76 101C58 111 46 121 36 129",
+    end: [-10, 8],
+  },
+  loop: {
+    d: "M376 10C373 42 340 62 296 66C254 70 222 56 232 41C242 27 266 44 254 70C240 99 160 104 104 109C76 112 54 119 40 129",
+    end: [-14, 10],
+  },
+  hook: {
+    d: "M370 14C379 58 322 94 234 93C152 92 92 71 62 92C47 103 41 116 43 130",
+    end: [1, 12],
+  },
+} as const;
+
+const curve = curves[variant];
+const heads = arrowhead(...pathEnd(curve.d), curve.end);
+const filterId = `connector-grain-${variant}`;
+---
+
+<div class:list={["product-connector", `product-connector-${direction}`, `product-connector-${variant}`, "reveal"]} aria-hidden="true">
+  <div class="product-connector-art">
+    <svg class="product-connector-curve" viewBox="0 0 400 140" focusable="false">
+      <defs>
+        <filter id={filterId} x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7" result="n" />
+          <feDisplacementMap in="SourceGraphic" in2="n" scale="2" />
+        </filter>
+      </defs>
+      <g filter={`url(#${filterId})`} transform={direction === "ltr" ? "translate(400 0) scale(-1 1)" : undefined}>
+        <path class="pencil-line" pathLength="1" d={curve.d} />
+        {heads.map((d) => <path class="pencil-head" pathLength="1" d={d} />)}
+      </g>
+    </svg>
+
+    <svg class="product-connector-squiggle" viewBox={squiggle.viewBox} focusable="false">
+      <g filter={`url(#${filterId})`}>
+        <path class="pencil-line" pathLength="1" d={squiggle.line} />
+        {squiggle.heads.map((d) => <path class="pencil-head" pathLength="1" d={d} />)}
+      </g>
+    </svg>
+
+    <p class="product-connector-note pencil-note-text">{text}</p>
+  </div>
+</div>

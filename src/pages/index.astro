@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Why from "../components/Why.astro";
+import ProductRange from "../components/ProductRange.astro";
+import About from "../components/About.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import { business } from "../data/business";
+---
+
+<BaseLayout title={business.title} description={business.description} includeSchema>
+  <Header />
+  <main id="main" class="w-full max-w-full overflow-x-clip">
+    <Hero />
+    <Why />
+    <ProductRange />
+    <About />
+    <Contact />
+  </main>
+  <Footer />
+</BaseLayout>

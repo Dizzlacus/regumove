@@ -1,0 +1,101 @@
+---
+/**
+ * One product row. Text is always first in the DOM (and first when stacked below 810px);
+ * `reverse` moves the visual to the left column from 810px up via CSS grid order.
+ */
+import { Picture } from "astro:assets";
+import Button from "./Button.astro";
+import type { Product, ProductIcon } from "../data/products";
+
+interface Props {
+  product: Product;
+  /** 1-based position in the range, shown as "01 / Hands". */
+  index: number;
+  reverse?: boolean;
+}
+
+const { product, index, reverse = false } = Astro.props;
+const label = `${String(index).padStart(2, "0")} / ${product.category}`;
+
+// Keep the last word and the trailing icon together so the icon never wraps onto a line alone.
+const questionWords = product.question.split(" ");
+const questionLast = questionWords.pop();
+const questionLead = questionWords.join(" ");
+
+// Lucide outline paths (24×24): Hand, Footprints, Pencil, Pointer.
+const iconPaths: Record<ProductIcon, string[]> = {
+  hand: [
+    "M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2",
+    "M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2",
+    "M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8",
+    "M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15",
+  ],
+  footprints: [
+    "M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z",
+    "M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z",
+    "M16 17h4",
+    "M4 13h4",
+  ],
+  pencil: [
+    "M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z",
+    "m15 5 4 4",
+  ],
+  pointer: [
+    "M22 14a8 8 0 0 1-8 8",
+    "M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2",
+    "M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1",
+    "M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10",
+    "M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15",
+  ],
+};
+---
+
+<article
+  id={`product-${product.id}`}
+  class:list={["product-story", reverse && "product-story-reverse"]}
+  aria-labelledby={`product-${product.id}-name`}
+>
+  <div class="product-story-text">
+    <p class="product-label">{label}</p>
+    <p class="product-question">
+      {questionLead}{" "}<span class="product-question-end">{questionLast}<svg class="product-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          {iconPaths[product.icon].map((d) => <path d={d} />)}
+        </svg></span>
+    </p>
+    <h3 id={`product-${product.id}-name`} class="range-heading">{product.name}</h3>
+    <p class="text-lead">{product.tagline}</p>
+    <p class="text-body">{product.description}</p>
+    {
+      product.pressureGuide && (
+        <div class="pressure-guide" role="img" aria-label="Guide: from light to heavy pencil pressure">
+          <span aria-hidden="true">Light</span>
+          <span class="pressure-guide-line" aria-hidden="true" />
+          <span aria-hidden="true">Heavy</span>
+        </div>
+      )
+    }
+    <Button href="#contact">{product.cta}</Button>
+  </div>
+
+  <div class="product-visual">
+    {
+      product.visual ? (
+        <Picture
+          src={product.visual.src}
+          formats={["avif", "webp"]}
+          widths={[400, 600, 900, 1200]}
+          sizes="(min-width: 1312px) 536px, (min-width: 810px) calc(50vw - 92px), calc(100vw - 98px)"
+          alt={product.visual.alt}
+          loading="lazy"
+          decoding="async"
+          class="product-visual-img"
+        />
+      ) : (
+        <>
+          <span class="product-placeholder-slab" aria-hidden="true" />
+          <p class="product-placeholder-label">{product.placeholderLabel}</p>
+        </>
+      )
+    }
+  </div>
+</article>

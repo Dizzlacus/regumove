@@ -1,0 +1,106 @@
+---
+import { business } from "../data/business";
+import { isPagesPreview, withBase } from "../lib/url";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  bodyClass?: string;
+  includeSchema?: boolean;
+  /** Keeps a page out of search results (also excluded from the sitemap in astro.config.mjs). */
+  noindex?: boolean;
+}
+
+const {
+  title = business.title,
+  description = business.description,
+  bodyClass = "",
+  includeSchema = false,
+  noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageURL = new URL(withBase("/og.png"), Astro.site).href;
+// Home page URL including the base, e.g. https://regumove.com/
+const siteURL = new URL(withBase("/"), Astro.site).href;
+// The GitHub Pages preview is never indexed.
+const robots = isPagesPreview ? "noindex, nofollow" : noindex ? "noindex" : "index, follow";
+
+const jsonLd = includeSchema
+  ? {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": `${siteURL}#organization`,
+          name: business.name,
+          description: business.description,
+          url: siteURL,
+          slogan: business.strapline,
+        },
+        {
+          "@type": "WebSite",
+          "@id": `${siteURL}#website`,
+          name: business.name,
+          url: siteURL,
+          description: business.description,
+          publisher: { "@id": `${siteURL}#organization` },
+        },
+      ],
+    }
+  : null;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f8f3eb" />
+    <meta name="robots" content={robots} />
+    {!noindex && <link rel="canonical" href={canonicalURL} />}
+    <!-- Lets CSS hide scroll-reveal content only when JS will reveal it again. -->
+    <script is:inline>document.documentElement.classList.add("js");</script>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=Caveat:wght@500&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={business.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="ReguMove. Innovating the classroom. Enabling potential." />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content="ReguMove. Innovating the classroom. Enabling potential." />
+
+    {!isPagesPreview && <link rel="sitemap" href={withBase("/sitemap-index.xml")} />}
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="apple-touch-icon" sizes="180x180" href={withBase("/apple-touch-icon.png")} />
+    <link rel="manifest" href={withBase("/favicon/site.webmanifest")} />
+    {
+      jsonLd && (
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+      )
+    }
+  </head>
+  <body class:list={["min-h-screen w-full max-w-full antialiased overflow-x-hidden", bodyClass]}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+    <script src="../scripts/main.js"></script>
+  </body>
+</html>

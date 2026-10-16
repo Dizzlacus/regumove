@@ -1,0 +1,18 @@
+---
+import logo from "../assets/brand/logo.svg";
+import { business } from "../data/business";
+import { isPagesPreview, withBase } from "../lib/url";
+---
+
+<footer class="site-footer">
+  <div class="site-container site-container-wide">
+    <div class="footer-inner">
+      <img src={logo.src} width={logo.width} height={logo.height} alt={business.name} loading="lazy" decoding="async" class="footer-logo" />
+      <div class="footer-meta">
+        <p class="footer-line">{business.footerLine}</p>
+        <a href={withBase("/privacy")} class="footer-link">Privacy</a>
+        {isPagesPreview && <p class="footer-line" style="font-size: 0.875rem;">Preview draft — not yet published</p>}
+      </div>
+    </div>
+  </div>
+</footer>

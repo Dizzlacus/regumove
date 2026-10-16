@@ -1,0 +1,76 @@
+---
+import Button from "./Button.astro";
+import { withBase } from "../lib/url";
+import { HONEYPOT_FIELD, enquiryFields as fields, enquiryRoles } from "../data/enquiry";
+---
+
+<section id="contact" class="section" aria-labelledby="contact-heading">
+  <div class="site-container site-container-wide contact-grid">
+    <div class="contact-intro">
+      <p class="eyebrow">Let’s talk</p>
+      <h2 id="contact-heading" class="section-heading">What would make a difference in your setting?</h2>
+      <p class="section-lead text-lead">
+        Tell me about the everyday challenge you want to address—whether it’s making room for movement at a desk, exploring tactile activities or helping a child understand pencil pressure.
+      </p>
+      <p class="text-body">
+        Get in touch to discuss the range, share your perspective or express interest in future demonstrations and feedback opportunities.
+      </p>
+    </div>
+
+    <div class="contact-card">
+      <!-- Works without JS (plain POST, the Worker replies with a page); main.js enhances it to a JSON fetch. -->
+      <form id="enquiry-form" class="enquiry-form" action={withBase("/api/enquire")} method="post" aria-describedby="enquiry-hint">
+        <div class="hp" aria-hidden="true">
+          <label for={HONEYPOT_FIELD}>Leave this field empty</label>
+          <input id={HONEYPOT_FIELD} name={HONEYPOT_FIELD} type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="field">
+          <label for="name">{fields.name.label}</label>
+          <input id="name" name="name" type="text" autocomplete="name" required maxlength={fields.name.maxLength} />
+          <p id="name-error" class="field-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="email">{fields.email.label}</label>
+          <input id="email" name="email" type="email" autocomplete="email" spellcheck="false" required maxlength={fields.email.maxLength} />
+          <p id="email-error" class="field-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="role">{fields.role.label}</label>
+          <div class="select-wrap">
+            <select id="role" name="role" required>
+              <option value="" selected>Please choose…</option>
+              {enquiryRoles.map((role) => <option value={role.value}>{role.label}</option>)}
+            </select>
+            <svg class="select-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
+          </div>
+          <p id="role-error" class="field-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="organisation">{fields.organisation.label}</label>
+          <input id="organisation" name="organisation" type="text" autocomplete="organization" maxlength={fields.organisation.maxLength} />
+          <p id="organisation-error" class="field-error" hidden></p>
+        </div>
+
+        <div class="field">
+          <label for="message">{fields.message.label}</label>
+          <textarea id="message" name="message" required maxlength={fields.message.maxLength}></textarea>
+          <p id="message-error" class="field-error" hidden></p>
+        </div>
+
+        <p id="enquiry-hint" class="field-hint">
+          Please describe the situation generally, without including a child’s name or personal records. See our <a href={withBase("/privacy")}>privacy notice</a>.
+        </p>
+
+        <div class="form-actions">
+          <Button type="submit" class="enquiry-submit">Start the conversation</Button>
+        </div>
+      </form>
+
+      <div id="form-status" class="form-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></div>
+    </div>
+  </div>
+</section>
