@@ -146,8 +146,10 @@ body {
   font-family: var(--font-sans);
 }
 
-body::before {
-  content: "";
+/* Page-wide paper grain. A real element, not body::before: iOS 26 Safari hit-tests the top
+   edge to pick the status-bar colour, and a pseudo-element counts as <body>, so it never
+   reached the header. WebKit skips a pointer-events:none layer under 0.1 opacity. */
+.page-grain {
   position: fixed;
   inset: 0;
   pointer-events: none;
@@ -901,16 +903,6 @@ body::before {
   background-color: var(--color-paper);
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-#site-header::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 100%;
-  height: 100vh;
-  background: var(--color-paper);
 }
 
 #site-header.is-sticky {
