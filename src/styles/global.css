@@ -896,9 +896,9 @@ body::before {
   /* iOS (viewport-fit=cover): the bar extends up under the status bar so page content
      never shows above it; the inner row keeps its height below the inset. */
   padding-top: env(safe-area-inset-top, 0px);
-  background: color-mix(in srgb, var(--color-paper) 90%, transparent);
-  -webkit-backdrop-filter: saturate(1.15) blur(12px);
-  backdrop-filter: saturate(1.15) blur(12px);
+  /* Solid, not translucent: iOS 26 Safari tints the status-bar area from an opaque fixed
+     header's background, but shows the page through it when the header is see-through. */
+  background-color: var(--color-paper);
   border-bottom: 1px solid transparent;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
