@@ -40,7 +40,7 @@ export const products: Product[] = [
     tagline: "Give busy hands somewhere to go.",
     description:
       "A desk-mounted design bringing tactile activities within reach. With features to slide, turn and roll, ReguDesk explores how hand movement can be accommodated at the desk.",
-    cta: "Ask about ReguDesk",
+    cta: "Enquire now",
     visual: {
       src: desk,
       alt: "CAD render of ReguDesk, a grey desk-mounted unit with a slider, dials and tactile controls.",
@@ -56,7 +56,7 @@ export const products: Product[] = [
     tagline: "Make room for movement under the desk.",
     description:
       "A twin-pedal design for resisted foot movement while seated. ReguStep brings a practical movement option into the space beneath the desk.",
-    cta: "Ask about ReguStep",
+    cta: "Enquire now",
     visual: {
       src: step,
       alt: "CAD render of ReguStep, a low base with two green textured foot pedals.",
@@ -72,7 +72,7 @@ export const products: Product[] = [
     tagline: "Make “a little lighter” easier to understand.",
     description:
       "A writing surface designed to turn pencil pressure into visible feedback, giving the instruction to press more lightly—or more firmly—a reference the child can see.",
-    cta: "Ask about the writing board",
+    cta: "Enquire now",
     pressureGuide: true,
     visual: {
       src: board,
@@ -82,14 +82,15 @@ export const products: Product[] = [
   },
   {
     id: "pinch",
-    name: "Pinch Node",
+    name: "ReguPinch",
     category: "Fingers",
     question: "What if small movements had somewhere purposeful to go?",
     icon: "pointer",
-    tagline: "Small movements. Thoughtful design.",
+    tagline:
+      "A hands-on writing intervention tool designed to support fine motor skills, hand control and the foundations of handwriting.",
     description:
-      "A concept exploring finger movement and guided activity. Further details will follow as the mechanical design progresses.",
-    cta: "Keep me updated",
+      "Users gently pinch the stylus between their thumb and index finger to extend its tip, then guide a small token along a letter, shape or patterned path. This combines controlled finger pressure with guided movement, offering a purposeful, tactile way to practise skills used in writing.",
+    cta: "Enquire now",
     placeholderLabel: "3D concept — asset to follow",
   },
 ];

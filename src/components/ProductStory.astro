@@ -74,7 +74,7 @@ const iconPaths: Record<ProductIcon, string[]> = {
         </div>
       )
     }
-    <Button href="#contact">{product.cta}</Button>
+    <Button href="#contact" aria-label={`${product.cta}: ${product.name}`}>{product.cta}</Button>
   </div>
 
   <div class="product-visual">

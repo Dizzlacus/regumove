@@ -57,7 +57,7 @@ Set the two plain variables under `vars` in `wrangler.jsonc` or in the Cloudflar
 
 ## Product section
 
-`src/components/ProductRange.astro` (section `#products`) renders one `ProductStory.astro` row per entry in `src/data/products.ts`; it is mounted in `src/pages/index.astro`. Styles live in the "Products" block of `src/styles/global.css` (Tailwind v4, CSS-first; breakpoints 810px and 1200px) and reuse the shared `.btn` and `.eyebrow`. No client JavaScript. Every button links to `#contact`, which `Contact.astro` supplies. Rows alternate from 810px via CSS `order`; text stays first in the DOM so phones read text before the visual. Pinch Node still uses a placeholder: add a `visual` once a real render exists.
+`src/components/ProductRange.astro` (section `#products`) renders one `ProductStory.astro` row per entry in `src/data/products.ts`; it is mounted in `src/pages/index.astro`. Styles live in the "Products" block of `src/styles/global.css` (Tailwind v4, CSS-first; breakpoints 810px and 1200px) and reuse the shared `.btn` and `.eyebrow`. No client JavaScript. Every button links to `#contact`, which `Contact.astro` supplies. Rows alternate from 810px via CSS `order`; text stays first in the DOM so phones read text before the visual. ReguPinch still uses a placeholder: add a `visual` once a real render exists.
 
 ## GitHub Pages preview
 
