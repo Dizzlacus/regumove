@@ -80,17 +80,18 @@ export const products: Product[] = [
     },
     placeholderLabel: "Interactive demonstration — asset to follow",
   },
-  {
-    id: "pinch",
-    name: "ReguPinch",
-    category: "Fingers",
-    question: "What if small movements had somewhere purposeful to go?",
-    icon: "pointer",
-    tagline:
-      "A hands-on writing intervention tool designed to support fine motor skills, hand control and the foundations of handwriting.",
-    description:
-      "Users gently pinch the stylus between their thumb and index finger to extend its tip, then guide a small token along a letter, shape or patterned path. This combines controlled finger pressure with guided movement, offering a purposeful, tactile way to practise skills used in writing.",
-    cta: "Enquire now",
-    placeholderLabel: "3D concept — asset to follow",
-  },
+  // ReguPinch hidden for now — uncomment to restore.
+  // {
+  //   id: "pinch",
+  //   name: "ReguPinch",
+  //   category: "Fingers",
+  //   question: "What if small movements had somewhere purposeful to go?",
+  //   icon: "pointer",
+  //   tagline:
+  //     "A hands-on writing intervention tool designed to support fine motor skills, hand control and the foundations of handwriting.",
+  //   description:
+  //     "Users gently pinch the stylus between their thumb and index finger to extend its tip, then guide a small token along a letter, shape or patterned path. This combines controlled finger pressure with guided movement, offering a purposeful, tactile way to practise skills used in writing.",
+  //   cta: "Enquire now",
+  //   placeholderLabel: "3D concept — asset to follow",
+  // },
 ];
