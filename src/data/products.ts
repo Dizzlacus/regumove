@@ -1,10 +1,42 @@
 import type { ImageMetadata } from "astro";
-import desk from "../assets/images/regudesk-cutout.png";
+import deskCutout1 from "../assets/images/regudesk-1-cutout.png";
+import deskCutout2 from "../assets/images/regudesk-2-cutout.png";
+import deskCutout3 from "../assets/images/regudesk-3-cutout.png";
+import deskCutout4 from "../assets/images/regudesk-4-cutout.png";
+import deskCutout5 from "../assets/images/regudesk-5-cutout.png";
+import deskPhoto1 from "../assets/images/regudesk-1.jpg";
+import deskPhoto2 from "../assets/images/regudesk-2.jpg";
+import deskPhoto3 from "../assets/images/regudesk-3.jpg";
+import deskPhoto4 from "../assets/images/regudesk-4.jpg";
+import deskPhoto5 from "../assets/images/regudesk-5.jpg";
+import deskVideoPoster from "../assets/images/regudesk-video-poster.jpg";
 import step from "../assets/images/regustep-cutout.png";
 import board from "../assets/images/writing-board-cutout.png";
 
 /** Outline icons drawn inline by ProductStory.astro (Lucide-style). */
 export type ProductIcon = "hand" | "footprints" | "pencil" | "pointer";
+
+/**
+ * One slide of a product gallery (ProductGallery.astro). Images go through astro:assets;
+ * a video is served as-is from public/ (path is root-relative, prefixed with the base at render).
+ */
+export type GallerySlide =
+  | {
+      kind: "image";
+      src: ImageMetadata;
+      alt: string;
+      /** Transparent cutout: inset and contained. Otherwise a photo that fills the frame. */
+      cutout?: boolean;
+    }
+  | {
+      kind: "video";
+      /** Root-relative path under public/, e.g. "/media/clip.mp4". */
+      src: string;
+      type: string;
+      poster: ImageMetadata;
+      /** Accessible name for the slide and the video. */
+      label: string;
+    };
 
 export interface Product {
   /** Anchor for the row: #product-{id} */
@@ -26,7 +58,13 @@ export interface Product {
     src: ImageMetadata;
     alt: string;
   };
-  /** Shown in the visual panel whenever there is no `visual`. */
+  /** Slideshow shown instead of `visual` when present. */
+  gallery?: {
+    /** Accessible name for the carousel region. */
+    label: string;
+    slides: GallerySlide[];
+  };
+  /** Shown in the visual panel whenever there is neither `gallery` nor `visual`. */
   placeholderLabel: string;
 }
 
@@ -41,9 +79,73 @@ export const products: Product[] = [
     description:
       "A desk-mounted design bringing tactile activities within reach. With features to slide, turn and roll, ReguDesk explores how hand movement can be accommodated at the desk.",
     cta: "Enquire now",
-    visual: {
-      src: desk,
-      alt: "CAD render of ReguDesk, a grey desk-mounted unit with a slider, dials and tactile controls.",
+    gallery: {
+      label: "ReguDesk photos and video",
+      slides: [
+        {
+          kind: "image",
+          src: deskCutout3,
+          cutout: true,
+          alt: "ReguDesk from above: a raised-dot strip, a slider, mint and white keys, a white trackball, a dial and a knurled roller.",
+        },
+        {
+          kind: "image",
+          src: deskCutout1,
+          cutout: true,
+          alt: "ReguDesk from the back: two suction-cup mounts beneath a ledge embossed with the ReguMove logo.",
+        },
+        {
+          kind: "image",
+          src: deskCutout2,
+          cutout: true,
+          alt: "ReguDesk from the side, with its keys, trackball and dial along the front edge.",
+        },
+        {
+          kind: "image",
+          src: deskCutout4,
+          cutout: true,
+          alt: "ReguDesk standing upright, with the ReguMove logo on top and its tactile controls on the front.",
+        },
+        {
+          kind: "image",
+          src: deskCutout5,
+          cutout: true,
+          alt: "ReguDesk from above at an angle, showing the keys, trackball, dial, roller and slider in a row.",
+        },
+        {
+          kind: "image",
+          src: deskPhoto3,
+          alt: "Photo of ReguDesk from above on a white desk: raised-dot strip, slider, keys, trackball, dial and roller.",
+        },
+        {
+          kind: "image",
+          src: deskPhoto1,
+          alt: "Photo of the back of ReguDesk on a white desk in striped window light, showing its two suction-cup mounts.",
+        },
+        {
+          kind: "image",
+          src: deskPhoto2,
+          alt: "Photo of ReguDesk from the side on a white desk, its controls catching the window light.",
+        },
+        {
+          kind: "image",
+          src: deskPhoto4,
+          alt: "Photo of ReguDesk standing upright on a white desk, with the ReguMove logo on top.",
+        },
+        {
+          kind: "image",
+          src: deskPhoto5,
+          alt: "Close photo of ReguDesk from above: mint and white keys, a trackball, a dial and a knurled roller.",
+        },
+        {
+          kind: "video",
+          src: "/media/regudesk-demo.mp4",
+          type: "video/mp4",
+          poster: deskVideoPoster,
+          label:
+            "Video: ReguDesk mounted under the edge of a desk, as a hand presses the keys, rolls the trackball and turns the roller.",
+        },
+      ],
     },
     placeholderLabel: "Large product visual — CAD render to follow",
   },

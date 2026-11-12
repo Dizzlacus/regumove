@@ -1,0 +1,105 @@
+---
+/**
+ * Product slideshow (APG carousel pattern, no auto-rotation). Without JS the track is a
+ * horizontally scrolling, snapping strip; main.js turns it into one-slide-at-a-time with
+ * prev/next buttons, arrow keys, swipe and a polite live announcement.
+ */
+import { Picture, getImage } from "astro:assets";
+import type { GallerySlide } from "../data/products";
+import { withBase } from "../lib/url";
+
+interface Props {
+  id: string;
+  label: string;
+  slides: GallerySlide[];
+}
+
+const { id, label, slides } = Astro.props;
+const total = slides.length;
+
+// Cutouts sit inside the panel's 1.5rem inset (same widths as ProductStory's single visual);
+// photos and the video fill the frame edge to edge.
+const sizesCutout = "(min-width: 1312px) 536px, (min-width: 810px) calc(50vw - 92px), calc(100vw - 98px)";
+const sizesPhoto = "(min-width: 1312px) 584px, (min-width: 810px) calc(50vw - 44px), calc(100vw - 50px)";
+
+const posters = await Promise.all(
+  slides.map((slide) =>
+    slide.kind === "video" ? getImage({ src: slide.poster, format: "webp", width: 1024 }) : null,
+  ),
+);
+---
+
+<div
+  class="carousel"
+  role="region"
+  aria-roledescription="carousel"
+  aria-label={label}
+  tabindex="0"
+  data-carousel
+>
+  <div class="carousel-viewport" data-carousel-viewport>
+    <div class="carousel-track" id={`${id}-slides`} data-carousel-track>
+      {
+        slides.map((slide, i) => (
+          <div
+            class:list={["carousel-slide", slide.kind === "image" && slide.cutout && "carousel-slide-cutout"]}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${total}`}
+            data-carousel-slide
+            data-label={slide.kind === "video" ? "Video" : slide.kind === "image" && slide.cutout ? "Product view" : "Photo"}
+          >
+            {slide.kind === "image" ? (
+              <Picture
+                src={slide.src}
+                formats={["avif", "webp"]}
+                widths={[400, 600, 900, 1200]}
+                sizes={slide.cutout ? sizesCutout : sizesPhoto}
+                alt={slide.alt}
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
+                class="carousel-img"
+              />
+            ) : (
+              <video
+                class="carousel-video"
+                controls
+                muted
+                playsinline
+                preload="metadata"
+                poster={posters[i]?.src}
+                aria-label={slide.label}
+              >
+                <source src={withBase(slide.src)} type={slide.type} />
+                <a href={withBase(slide.src)}>Download the ReguDesk video</a>
+              </video>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="carousel-controls" data-carousel-controls hidden>
+    <button
+      type="button"
+      class="btn btn-secondary carousel-btn"
+      aria-controls={`${id}-slides`}
+      aria-label="Previous slide"
+      data-carousel-prev
+    >
+      <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m15 18-6-6 6-6" /></svg>
+    </button>
+    <p class="carousel-counter" aria-hidden="true" data-carousel-counter>1 / {total}</p>
+    <button
+      type="button"
+      class="btn btn-secondary carousel-btn"
+      aria-controls={`${id}-slides`}
+      aria-label="Next slide"
+      data-carousel-next
+    >
+      <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 18 6-6-6-6" /></svg>
+    </button>
+  </div>
+  <p class="sr-only" aria-live="polite" aria-atomic="true" data-carousel-status></p>
+</div>

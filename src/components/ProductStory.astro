@@ -5,6 +5,7 @@
  */
 import { Picture } from "astro:assets";
 import Button from "./Button.astro";
+import ProductGallery from "./ProductGallery.astro";
 import type { Product, ProductIcon } from "../data/products";
 
 interface Props {
@@ -77,9 +78,11 @@ const iconPaths: Record<ProductIcon, string[]> = {
     <Button href="#contact" aria-label={`${product.cta}: ${product.name}`}>{product.cta}</Button>
   </div>
 
-  <div class="product-visual">
+  <div class:list={["product-visual", product.gallery && "product-visual-gallery"]}>
     {
-      product.visual ? (
+      product.gallery ? (
+        <ProductGallery id={`product-${product.id}-gallery`} label={product.gallery.label} slides={product.gallery.slides} />
+      ) : product.visual ? (
         <Picture
           src={product.visual.src}
           formats={["avif", "webp"]}

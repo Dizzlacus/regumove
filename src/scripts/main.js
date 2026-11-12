@@ -118,6 +118,96 @@ import { validateEnquiry } from "../lib/validate-enquiry";
 })();
 
 (function () {
+  // Product slideshows (ProductGallery.astro): one slide at a time, prev/next, arrow keys, swipe.
+  // Off-screen slides are inert and hidden from AT; a polite live region announces each change.
+  const carousels = document.querySelectorAll("[data-carousel]");
+
+  carousels.forEach((carousel) => {
+    const viewport = carousel.querySelector("[data-carousel-viewport]");
+    const track = carousel.querySelector("[data-carousel-track]");
+    const slides = [...carousel.querySelectorAll("[data-carousel-slide]")];
+    const controls = carousel.querySelector("[data-carousel-controls]");
+    const prev = carousel.querySelector("[data-carousel-prev]");
+    const next = carousel.querySelector("[data-carousel-next]");
+    const counter = carousel.querySelector("[data-carousel-counter]");
+    const status = carousel.querySelector("[data-carousel-status]");
+    if (!(viewport instanceof HTMLElement) || !(track instanceof HTMLElement) || !slides.length) return;
+
+    const total = slides.length;
+    let current = 0;
+
+    // Start loading the neighbours' images so a step never lands on a blank slide.
+    function warm(index) {
+      const slide = slides[(index + total) % total];
+      slide?.querySelectorAll('img[loading="lazy"]').forEach((img) => (img.loading = "eager"));
+    }
+
+    function goTo(index, announce) {
+      current = (index + total) % total;
+      track.style.transform = `translateX(${-100 * current}%)`;
+      slides.forEach((slide, i) => {
+        const active = i === current;
+        slide.toggleAttribute("inert", !active);
+        slide.setAttribute("aria-hidden", String(!active));
+        if (!active) slide.querySelectorAll("video").forEach((video) => video.pause());
+      });
+      if (counter) counter.textContent = `${current + 1} / ${total}`;
+      if (announce && status) {
+        const kind = slides[current].dataset.label;
+        status.textContent = `Slide ${current + 1} of ${total}${kind ? `: ${kind}` : ""}`;
+      }
+      warm(current + 1);
+      warm(current - 1);
+    }
+
+    // The no-JS fallback scrolls; reset it so the transform starts from the first slide.
+    viewport.scrollLeft = 0;
+    if (controls) controls.hidden = false;
+    goTo(0, false);
+
+    prev?.addEventListener("click", () => goTo(current - 1, true));
+    next?.addEventListener("click", () => goTo(current + 1, true));
+
+    carousel.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      // Leave arrow keys to the video's own controls (seeking).
+      if (event.target instanceof HTMLVideoElement) return;
+      event.preventDefault();
+      goTo(current + (event.key === "ArrowLeft" ? -1 : 1), true);
+    });
+
+    // Horizontal swipe; vertical drags still scroll the page (touch-action: pan-y).
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+    viewport.addEventListener(
+      "touchstart",
+      (event) => {
+        if (event.touches.length !== 1) return;
+        tracking = true;
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+      },
+      { passive: true },
+    );
+    viewport.addEventListener(
+      "touchend",
+      (event) => {
+        if (!tracking) return;
+        tracking = false;
+        const touch = event.changedTouches[0];
+        const dx = touch.clientX - startX;
+        const dy = touch.clientY - startY;
+        if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy) * 1.2) return;
+        goTo(current + (dx < 0 ? 1 : -1), true);
+      },
+      { passive: true },
+    );
+    viewport.addEventListener("touchcancel", () => (tracking = false), { passive: true });
+  });
+})();
+
+(function () {
   // Enhances the plain POST form: validates inline, sends JSON and reports the real outcome.
   const form = document.getElementById("enquiry-form");
   const status = document.getElementById("form-status");

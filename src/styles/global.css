@@ -1256,6 +1256,110 @@ body {
   object-fit: contain;
 }
 
+/*
+ * Product slideshow (ProductGallery.astro). The panel keeps its card look but drops the fixed
+ * height and inset: a 4:3 frame (the photos' own ratio) holds every slide, so cutouts, photos and
+ * the 16:9 video never change the row's height. Without JS the frame scrolls and snaps sideways.
+ */
+.product-visual-gallery {
+  display: block;
+  height: auto;
+  padding: 0;
+  overflow: hidden;
+}
+
+.carousel-viewport {
+  aspect-ratio: 4 / 3;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+}
+
+/* The region itself takes focus so the arrow keys work; ring it inside the panel's clipped edge. */
+.carousel:focus-visible {
+  outline-offset: -3px;
+  border-radius: inherit;
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  height: 100%;
+  scroll-snap-align: center;
+}
+
+.carousel-slide-cutout {
+  padding: 1.5rem;
+}
+
+.carousel-slide picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.carousel-img,
+.carousel-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.carousel-slide:not(.carousel-slide-cutout) .carousel-img {
+  object-fit: cover; /* 4:3 photos in a 4:3 frame: fills without cropping */
+}
+
+.carousel-video {
+  background: var(--color-forest);
+}
+
+/* With JS: one slide at a time, moved by transform; swipes are handled in main.js. */
+html.js .carousel-viewport {
+  overflow: hidden;
+  scroll-snap-type: none;
+  touch-action: pan-y;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js .carousel-track {
+    transition: transform 450ms var(--ease-soft);
+  }
+}
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid var(--color-line);
+}
+
+.carousel-controls[hidden] {
+  display: none;
+}
+
+.carousel-btn {
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+}
+
+.carousel-counter {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-moss);
+}
+
 .product-placeholder-slab {
   display: block;
   flex: none;
