@@ -4,11 +4,6 @@ import deskCutout2 from "../assets/images/regudesk-2-cutout.png";
 import deskCutout3 from "../assets/images/regudesk-3-cutout.png";
 import deskCutout4 from "../assets/images/regudesk-4-cutout.png";
 import deskCutout5 from "../assets/images/regudesk-5-cutout.png";
-import deskPhoto1 from "../assets/images/regudesk-1.jpg";
-import deskPhoto2 from "../assets/images/regudesk-2.jpg";
-import deskPhoto3 from "../assets/images/regudesk-3.jpg";
-import deskPhoto4 from "../assets/images/regudesk-4.jpg";
-import deskPhoto5 from "../assets/images/regudesk-5.jpg";
 import deskVideoPoster from "../assets/images/regudesk-video-poster.jpg";
 import step from "../assets/images/regustep-cutout.png";
 import board from "../assets/images/writing-board-cutout.png";
@@ -111,31 +106,6 @@ export const products: Product[] = [
           src: deskCutout5,
           cutout: true,
           alt: "ReguDesk from above at an angle, showing the keys, trackball, dial, roller and slider in a row.",
-        },
-        {
-          kind: "image",
-          src: deskPhoto3,
-          alt: "Photo of ReguDesk from above on a white desk: raised-dot strip, slider, keys, trackball, dial and roller.",
-        },
-        {
-          kind: "image",
-          src: deskPhoto1,
-          alt: "Photo of the back of ReguDesk on a white desk in striped window light, showing its two suction-cup mounts.",
-        },
-        {
-          kind: "image",
-          src: deskPhoto2,
-          alt: "Photo of ReguDesk from the side on a white desk, its controls catching the window light.",
-        },
-        {
-          kind: "image",
-          src: deskPhoto4,
-          alt: "Photo of ReguDesk standing upright on a white desk, with the ReguMove logo on top.",
-        },
-        {
-          kind: "image",
-          src: deskPhoto5,
-          alt: "Close photo of ReguDesk from above: mint and white keys, a trackball, a dial and a knurled roller.",
         },
         {
           kind: "video",
